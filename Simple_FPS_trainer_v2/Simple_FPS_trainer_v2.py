@@ -22,13 +22,26 @@ counter = 0
 scoreCount = 0
 timerSecs = 0
 timeLeft=20
+totalTime = 20
+
+def submit():
+    global timeLeft, totalTime
+    if score == -1:
+        timerSecs_var=timerSecs_entry.get()
+        print("The name is : " + timerSecs_var)
+        timerSecs_entry.destroy()
+        if timerSecs_var != "":
+            timeLeft = int(timerSecs_var)
+            totalTime = timerSecs_var
+        else:
+            timeLeft == 20
+
 def timer():
-    global timerSecs
-    global timeLeft
+    global timerSecs, timeLeft, totalTime
     timerSecs+=1
     timeLeft-=1
     labelTime.config(text="Time remaining: "+str(timeLeft))
-    if timerSecs == 20:
+    if timerSecs == int(totalTime):
         button.destroy()
         answer = askyesno(title='Confirmation', message='Congratulations you have '+str(scoreCount)+' points, wanna play again?')
         if answer == True:
@@ -39,16 +52,14 @@ def timer():
         labelTime.after(1000, timer)
 
 def restartFunc():
-    global timerSecs
-    global scoreCount
-    global commandVar
-    global score
-    global button
-    global buttonVar
-    global timeLeft
+    global timerSecs, scoreCount, commandVar, score, button, buttonVar, timeLeft, timerSecs_var, timerSecs_entry
     timerSecs=0
+    score = 0
     timeLeft=20
     scoreCount=0
+    timerSecs_var = 20
+    timerSecs_entry = tkinter.Entry(window, textvariable = timerSecs_var, font = ('calibre',10,'normal'))
+    timerSecs_entry.pack()
     commandVar = random.choice(list)
     button = tkinter.Button(text="Click here to start", bg="White", borderwidth=0, height=2)
     button.place(x=180, y=120)
@@ -57,11 +68,8 @@ def restartFunc():
     score-=1
 
 def fpsFunction(e):
-    global scoreCount
-    global commandVar
-    global buttonVar
-    global score
-    global events
+    global scoreCount, commandVar, buttonVar, score, events
+    submit()
     events = "nope"
     score+=1
     window.unbind(buttonVar)
@@ -98,6 +106,10 @@ def fpsFunction(e):
     labelPoints.config(text=str(scoreCount)+" points")
     if timerSecs == 0:
         timer()
+
+timerSecs_var = 20
+timerSecs_entry = tkinter.Entry(window, textvariable = timerSecs_var, font = ('calibre',10,'normal'))
+timerSecs_entry.pack()
 
 commandVar = random.choice(list)
 button = tkinter.Button(text="Click here to start", bg="White", borderwidth=0, height=2)
